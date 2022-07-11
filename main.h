@@ -1,43 +1,50 @@
-#ifndef _PRINT_F
-#define _PRINT_F
+#ifndef MAIN_H
+#define MAIN_H
 
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+/* utils.c */
+int _strlen(const char *);
+int print(char *);
+char *itoa(long int, int);
+
+/* printf.c */
+int _printf(const char *, ...);
+
+/* handler.c */
+int handler(const char *, va_list);
+int percent_handler(const char *, va_list, int *);
+
+/* printers */
+int print_string(va_list);
+int print_char(va_list);
+int print_integer(va_list);
+int print_binary(va_list);
+int print_rot(va_list);
+int print_unsigned(va_list);
+int print_octal(va_list);
+int print_hexadecimal_low(va_list);
+int print_hexadecimal_upp(va_list);
+int print_pointer(va_list);
+int print_rev_string(va_list);
+
+/* _putchar.c */
+int _putchar(char);
+int buffer(char);
+
 /**
- * struct opc - Struct to find function
- * @c: char to check
- * @f: Pointer to function to call
- */
-
-typedef struct opc
+ * struct _format - Typedef struct
+ *
+ * @type: Format
+ * @f: The function associated
+ **/
+typedef struct _format
 {
-	char *c;
-	int (*f)();
-} print_opc;
+	char type;
+	int (*f)(va_list);
+} format;
 
-int _puts(char *str);
-int print_u(va_list valist);
-int _print_binary(va_list valist);
-char *convert(unsigned long int num, int base);
-int _putchar(int c);
-int buffchar(char c);
-void write_buffer(char buffer[], int *bufflen, int *buffpos);
-void create_buffer(char buffer[]);
-int _printf(const char *format, ...);
-int print_c(va_list args, char buffer[], int *bufflen, int *buffpos);
-int print_s(va_list args, char buffer[], int *bufflen, int *buffpos);
-int numbers(int n, char buffer[], int *bufflen, int *buffpos);
-int print_int(va_list args, char buffer[], int *bufflen, int *buffpos);
-
-int opc_print(char formatter, print_opc opc[], char buffer[],
-	      int *bufflenptr, int *buffposptr, va_list print_this);
-
-int to_format(const char *format, va_list print, char buffer[],
-	      int *bufflenptr, int *buffposptr, print_opc opc[]);
-
-int copy_buffer(char formatter, char buffer[],
-		int *bufflenptr, int *buffposptr);
 
 #endif

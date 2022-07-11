@@ -1,40 +1,30 @@
 #include "main.h"
 
 /**
- *_printf - function thats prints anything.
- * @format: String that contains parametters to print
- * Return: Size of the String printed.
+ *_printf - Produces output according to a format
+ * @format: Is a character string. The format string
+ * is composed of zero or more directives
  *
- */
-
+ * Return: The number of characters printed (excluding
+ * the null byte used to end output to strings)
+ **/
 int _printf(const char *format, ...)
 {
-	va_list print;
-	char buffer[2048];
-	int chr, bufflen, buffpos, *bufflenptr, *buffposptr;
-	print_opc opc[] = {{"c", print_c},
-			   {"s", print_s},
-			   {"i", print_int},
-			   {"d", print_int},
-			   {"b", _print_binary},
-			   {"u", print_u},
-	};
+	int size;
+	va_list args;
 
-	create_buffer(buffer);
-	chr = buffpos = 0;
-	bufflen = 1;
-	bufflenptr = &bufflen;
-	buffposptr = &buffpos;
-	va_start(print, format);
-
-	if (format == NULL || print == NULL)
+	if (format == NULL)
 		return (-1);
 
-	chr = to_format(format, print, buffer,
-			      bufflenptr, buffposptr, opc);
+	size = _strlen(format);
+	if (size <= 0)
+		return (0);
 
-	write_buffer(buffer, bufflenptr, buffposptr);
-	va_end(print);
-	return (chr);
+	va_start(args, format);
+	size = handler(format, args);
+
+	_putchar(-1);
+	va_end(args);
+
+	return (size);
 }
-
